@@ -1,0 +1,107 @@
+<!DOCTYPE html>
+<html lang="ko">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>정부 부처 최신 보도자료</title>
+    <meta name="description" content="금융위원회와 개인정보보호위원회의 최신 보도자료를 한눈에 확인하세요.">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Pretendard:wght@300;400;500;600;700&display=swap"
+        rel="stylesheet">
+    <link rel="stylesheet" href="style.css">
+</head>
+
+<body>
+    <div class="app-container">
+        <header class="app-header">
+            <div class="header-content">
+                <div class="title-group">
+                    <span class="badge">실시간 모니터링</span>
+                    <h1>정부 보도자료 대시보드</h1>
+                    <p>금융위원회와 개인정보보호위원회의 최신 소식을 가장 빠르게 확인하세요.</p>
+                </div>
+                <button id="refresh-btn" class="refresh-btn" aria-label="새로고침">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none"
+                        stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"
+                        class="refresh-icon">
+                        <path d="M21 12a9 9 0 0 0-9-9 9.75 9.75 0 0 0-6.74 2.74L3 8" />
+                        <path d="M3 3v5h5" />
+                        <path d="M3 12a9 9 0 0 0 9 9 9.75 9.75 0 0 0 6.74-2.74L21 16" />
+                        <path d="M16 21v-5h5" />
+                    </svg>
+                    새로고침
+                </button>
+            </div>
+        </header>
+
+        <main class="dashboard-grid">
+            <!-- FSC Section -->
+            <section class="commission-section fsc-section">
+                <div class="section-header fsc-header">
+                    <div class="logo-placeholder fsc-logo">금융소식</div>
+                    <h2>금융위원회</h2>
+                </div>
+                <div id="fsc-list" class="article-list">
+                    <!-- Skeletons for loading state -->
+                    <div class="skeleton-item"></div>
+                    <div class="skeleton-item"></div>
+                    <div class="skeleton-item"></div>
+                    <div class="skeleton-item"></div>
+                    <div class="skeleton-item"></div>
+                </div>
+            </section>
+
+            <!-- PIPC Section -->
+            <section class="commission-section pipc-section">
+                <div class="section-header pipc-header">
+                    <div class="logo-placeholder pipc-logo">개인정보</div>
+                    <h2>개인정보보호위원회</h2>
+                </div>
+                <div id="pipc-list" class="article-list">
+                    <!-- Skeletons for loading state -->
+                    <div class="skeleton-item"></div>
+                    <div class="skeleton-item"></div>
+                    <div class="skeleton-item"></div>
+                    <div class="skeleton-item"></div>
+                    <div class="skeleton-item"></div>
+                </div>
+            </section>
+
+            <!-- Naver News Section -->
+            <section class="commission-section naver-section">
+                <div class="section-header naver-header">
+                    <div class="logo-placeholder naver-logo">뉴스단신</div>
+                    <h2>네이버 뉴스 <span style="font-size:0.5em; opacity:0.8;">(가명정보)</span></h2>
+                </div>
+                <div id="naver-list" class="article-list">
+                    <!-- Skeletons for loading state -->
+                    <div class="skeleton-item"></div>
+                    <div class="skeleton-item"></div>
+                    <div class="skeleton-item"></div>
+                    <div class="skeleton-item"></div>
+                    <div class="skeleton-item"></div>
+                </div>
+            </section>
+        </main>
+    </div>
+
+    <!-- Template for Article Card -->
+    <template id="article-template">
+        <a href="" target="_blank" rel="noopener noreferrer" class="article-card">
+            <div class="article-meta">
+                <span class="article-dept"></span>
+                <span class="article-date"></span>
+            </div>
+            <h3 class="article-title"></h3>
+            <div class="article-footer">
+                <span class="read-more">자세히 보기 &rarr;</span>
+            </div>
+        </a>
+    </template>
+
+    <script src="script.js"></script>
+</body>
+
+</html>
