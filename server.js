@@ -14,6 +14,7 @@ const cors = require('cors');
 const axios = require('axios');
 const cheerio = require('cheerio');
 const path = require('path');
+const https = require('https');
 
 const app = express();
 const PORT = process.env.PORT || 3000;
@@ -27,7 +28,12 @@ const axiosConfig = {
         'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/121.0.0.0 Safari/537.36',
         'Accept': 'text/html,application/xhtml+xml,application/xml;q=0.9,image/avif,image/webp,image/apng,*/*;q=0.8,application/signed-exchange;v=b3;q=0.7',
         'Accept-Language': 'ko-KR,ko;q=0.9,en-US;q=0.8,en;q=0.7',
-    }
+    },
+    timeout: 10000,
+    httpsAgent: new https.Agent({
+        rejectUnauthorized: false, // Bypass strict SSL certificate checks
+        family: 4 // Force IPv4 resolution (Node 17+ uses IPv6 first, which fails on some govt sites)
+    })
 };
 
 async function scrapeFSC() {
