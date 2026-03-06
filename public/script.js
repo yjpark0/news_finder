@@ -89,8 +89,53 @@ document.addEventListener('DOMContentLoaded', () => {
         }
     }
 
-    // Bind event listener
+    // Individual Column Refresh
+    async function refreshColumn(source) {
+        let listContainer, listDataKey;
+        if (source === 'fsc') {
+            listContainer = fscList;
+            listDataKey = 'fsc';
+        } else if (source === 'pipc') {
+            listContainer = pipcList;
+            listDataKey = 'pipc';
+        } else if (source === 'naver') {
+            listContainer = naverList;
+            listDataKey = 'naver';
+        }
+
+        const btn = document.querySelector(`.col-refresh-btn[data-source="${source}"]`);
+        const icon = btn.querySelector('.refresh-icon');
+
+        icon.classList.add('spinning');
+        btn.disabled = true;
+        renderSkeletons(listContainer);
+
+        try {
+            const response = await fetch(`/api/articles?source=${source}`);
+            if (!response.ok) throw new Error('API Request Failed');
+
+            const data = await response.json();
+            renderArticles(data[listDataKey], listContainer);
+
+        } catch (error) {
+            console.error(`Failed to fetch ${source} articles:`, error);
+            listContainer.innerHTML = '<div class="article-card" style="text-align:center;color:#ef4444;">데이터를 불러오는 중 오류가 발생했습니다.</div>';
+        } finally {
+            icon.classList.remove('spinning');
+            btn.disabled = false;
+        }
+    }
+
+    // Bind event listeners
     refreshBtn.addEventListener('click', updateDashboard);
+
+    const colRefreshBtns = document.querySelectorAll('.col-refresh-btn');
+    colRefreshBtns.forEach(btn => {
+        btn.addEventListener('click', (e) => {
+            const source = e.currentTarget.getAttribute('data-source');
+            refreshColumn(source);
+        });
+    });
 
     // Initial load
     updateDashboard();

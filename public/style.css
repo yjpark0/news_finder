@@ -144,6 +144,30 @@ body {
     margin-bottom: 1.5rem;
 }
 
+.col-refresh-btn {
+    background: transparent;
+    color: var(--text-secondary);
+    border: 1px solid transparent;
+    border-radius: 50%;
+    width: 32px;
+    height: 32px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    transition: var(--transition);
+}
+
+.col-refresh-btn:hover {
+    background: var(--surface-hover);
+    color: var(--text-primary);
+    border-color: var(--border-color);
+}
+
+.col-refresh-btn:active {
+    transform: scale(0.95);
+}
+
 .logo-placeholder {
     width: 48px;
     height: 48px;

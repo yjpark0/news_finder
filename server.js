@@ -170,6 +170,20 @@ async function scrapeNaver() {
 
 app.get('/api/articles', async (req, res) => {
     try {
+        const source = req.query.source;
+
+        if (source === 'fsc') {
+            const fscArticles = await scrapeFSC();
+            return res.json({ fsc: fscArticles });
+        } else if (source === 'pipc') {
+            const pipcArticles = await scrapePIPC();
+            return res.json({ pipc: pipcArticles });
+        } else if (source === 'naver') {
+            const naverArticles = await scrapeNaver();
+            return res.json({ naver: naverArticles });
+        }
+
+        // Fetch all if no specific source is requested
         const [fscArticles, pipcArticles, naverArticles] = await Promise.all([
             scrapeFSC(),
             scrapePIPC(),
