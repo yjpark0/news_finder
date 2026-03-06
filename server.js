@@ -12,6 +12,7 @@ if (typeof globalThis.File === 'undefined') {
 const express = require('express');
 const cors = require('cors');
 const axios = require('axios');
+const axiosRetry = require('axios-retry').default;
 const cheerio = require('cheerio');
 const path = require('path');
 const https = require('https');
@@ -40,6 +41,19 @@ const axiosConfig = {
         ciphers: 'DEFAULT:@SECLEVEL=0'
     })
 };
+
+// Apply axios-retry to automatically handle ECONNRESET, timeouts, and 5xx errors
+axiosRetry(axios, {
+    retries: 3, // Number of retries
+    retryDelay: (retryCount) => {
+        console.log(`[Axios Retry] Attempt #${retryCount} waiting ${retryCount * 1000}ms...`);
+        return retryCount * 1000; // Time between retries in ms
+    },
+    retryCondition: (error) => {
+        // Retry on network errors like ECONNRESET or 5xx server errors
+        return axiosRetry.isNetworkOrIdempotentRequestError(error) || error.code === 'ECONNRESET' || error.code === 'ETIMEDOUT';
+    }
+});
 
 async function scrapeFSC() {
     try {
@@ -70,7 +84,12 @@ async function scrapeFSC() {
 
         return articles;
     } catch (error) {
-        console.error('Error scraping FSC:', error.message);
+        console.error('======================================');
+        console.error('[FSC 스크래핑 오류 발생]');
+        console.error(`- 대상: https://www.fsc.go.kr/no010101`);
+        console.error(`- 에러 코드: ${error.code || 'N/A'}`);
+        console.error(`- 상세 메시지: ${error.message}`);
+        console.error('======================================');
         return [];
     }
 }
@@ -111,7 +130,12 @@ async function scrapePIPC() {
 
         return articles;
     } catch (error) {
-        console.error('Error scraping PIPC:', error.message);
+        console.error('======================================');
+        console.error('[PIPC 스크래핑 오류 발생]');
+        console.error(`- 대상: https://www.pipc.go.kr/np/cop/bbs/selectBoardList.do`);
+        console.error(`- 에러 코드: ${error.code || 'N/A'}`);
+        console.error(`- 상세 메시지: ${error.message}`);
+        console.error('======================================');
         return [];
     }
 }
@@ -163,7 +187,12 @@ async function scrapeNaver() {
 
         return articles;
     } catch (error) {
-        console.error('Error scraping Naver:', error.message);
+        console.error('======================================');
+        console.error('[Naver 스크래핑 오류 발생]');
+        console.error(`- 대상: https://search.naver.com/search.naver?where=news&query=가명정보`);
+        console.error(`- 에러 코드: ${error.code || 'N/A'}`);
+        console.error(`- 상세 메시지: ${error.message}`);
+        console.error('======================================');
         return [];
     }
 }
